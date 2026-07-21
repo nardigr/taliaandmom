@@ -46,7 +46,7 @@ COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/clie
 COPY --from=builder /app/scripts/docker-entrypoint.sh ./docker-entrypoint.sh
 
 # Install sharp natively in the runner (more reliable than copying from builder).
-RUN npm install --omit=dev --no-save sharp@0.35.3 \
+RUN npm install --omit=dev --no-save --legacy-peer-deps sharp@0.35.3 \
   && chmod +x ./docker-entrypoint.sh \
   && chown -R nextjs:nodejs /app/uploads /app/node_modules
 
