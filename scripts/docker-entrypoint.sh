@@ -1,10 +1,8 @@
 #!/bin/sh
 set -e
 
-if [ -n "$DATABASE_URL" ] && [ -f "./node_modules/prisma/build/index.js" ]; then
-  echo "[deploy] Running database migrations..."
-  node ./node_modules/prisma/build/index.js migrate deploy
-fi
+# Migrations run during image build (Dockerfile). Runtime Prisma CLI is not
+# bundled fully in the standalone image, so we start the app directly.
 
 if [ -n "$UPLOADS_DIR" ] && [ ! -d "$UPLOADS_DIR" ]; then
   mkdir -p "$UPLOADS_DIR"
