@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.gitignore
+uploads
+.env
+.env.*
+!.env.example
+*.md
+docs
+agent-transcripts
+.cursor
+Dockerfile
+docker-compose*.yml
+scripts/setup-local-db.ps1
+npm-debug.log*
+.DS_Store

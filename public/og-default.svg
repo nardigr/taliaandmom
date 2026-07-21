@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Talja&amp;mom  Modë femrash">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fdfbf6"/>
+      <stop offset="50%" stop-color="#f8e7e3"/>
+      <stop offset="100%" stop-color="#f5eee3"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="290" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="600" fill="#4a2f26">Talja&amp;mom</text>
+  <text x="600" y="360" text-anchor="middle" font-family="Georgia, serif" font-size="28" letter-spacing="0.15em" fill="#6e4e40">ELEGANCË PËR ÇDO STINË</text>
+</svg>

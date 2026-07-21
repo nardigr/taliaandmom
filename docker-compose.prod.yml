@@ -1,0 +1,41 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: taljamom
+      POSTGRES_PASSWORD: taljamom
+      POSTGRES_DB: taljamom
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taljamom -d taljamom"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://taljamom:taljamom@postgres:5432/taljamom?schema=public
+      AUTH_SECRET: local-docker-auth-secret-change-me-32chars
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      UPLOADS_DIR: /app/uploads
+      ADMIN_EMAIL: admin@taljamom.al
+      ADMIN_PASSWORD: admin123
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  uploads_data:
