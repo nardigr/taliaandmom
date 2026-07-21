@@ -1,6 +1,4 @@
-import { unstable_cache } from "next/cache";
 import type { Collection } from "@prisma/client";
-import { CACHE_TAGS } from "@/lib/cache/tags";
 import { db } from "@/lib/db";
 
 export type CollectionItem = {
@@ -36,17 +34,14 @@ async function fetchCollections(activeOnly: boolean): Promise<CollectionItem[]> 
   }
 }
 
-export const getActiveCollections = unstable_cache(
-  () => fetchCollections(true),
-  ["collections-active"],
-  { tags: [CACHE_TAGS.collections] },
-);
+/** Fresh reads — admin sortOrder / active flags must show on the storefront immediately. */
+export async function getActiveCollections(): Promise<CollectionItem[]> {
+  return fetchCollections(true);
+}
 
-export const getAllCollections = unstable_cache(
-  () => fetchCollections(false),
-  ["collections-all"],
-  { tags: [CACHE_TAGS.collections] },
-);
+export async function getAllCollections(): Promise<CollectionItem[]> {
+  return fetchCollections(false);
+}
 
 export async function getCollectionBySlug(slug: string): Promise<CollectionItem | null> {
   const rows = await getAllCollections();

@@ -13,6 +13,9 @@ import {
 import { buildPageMetadata } from "@/lib/seo/build-metadata";
 import { t } from "@/lib/i18n/sq";
 
+/** CMS-driven homepage — always read fresh settings / page content. */
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   return buildPageMetadata({
     pageSlug: "home",

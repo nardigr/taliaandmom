@@ -1,5 +1,3 @@
-import { unstable_cache } from "next/cache";
-import { CACHE_TAGS } from "@/lib/cache/tags";
 import { db } from "@/lib/db";
 import type { ContentOverrides } from "@/lib/page-content/resolve";
 
@@ -10,19 +8,9 @@ async function fetchPageContentOverrides(pageSlug: string): Promise<ContentOverr
   );
 }
 
-async function fetchAllPageContentOverrides(): Promise<ContentOverrides> {
-  const rows = await db.pageContent.findMany();
-  return Object.fromEntries(
-    rows.map((row) => [`${row.pageSlug}.${row.sectionKey}`, { value: row.value, imageUrl: row.imageUrl }]),
-  );
-}
-
+/** Always fresh — homepage/CMS content must reflect admin saves immediately. */
 export async function getPageContentOverrides(pageSlug: string): Promise<ContentOverrides> {
-  return unstable_cache(
-    () => fetchPageContentOverrides(pageSlug),
-    ["page-content", pageSlug],
-    { tags: [CACHE_TAGS.pageContent] },
-  )();
+  return fetchPageContentOverrides(pageSlug);
 }
 
 export async function getPageContentOverridesForPages(
@@ -33,5 +21,3 @@ export async function getPageContentOverridesForPages(
   );
   return Object.fromEntries(entries);
 }
-
-export { fetchAllPageContentOverrides };

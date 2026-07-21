@@ -19,6 +19,7 @@ function revalidatePageContent(pageSlug: string) {
   if (page?.path) revalidatePath(page.path);
   if (pageSlug === "footer" || pageSlug === "home") {
     revalidatePath("/");
+    revalidatePath("/", "layout");
   }
 }
 
