@@ -8,15 +8,12 @@ import {
 } from "@/lib/catalog/filters";
 import { getCollectionBySlug, getActiveCollections } from "@/lib/collections";
 
+export const dynamic = "force-dynamic";
+
 type PageProps = {
   params: Promise<{ stina: string }>;
   searchParams: Promise<CatalogSearchParams>;
 };
-
-export async function generateStaticParams() {
-  const collections = await getActiveCollections();
-  return collections.map((item) => ({ stina: item.slug }));
-}
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { stina } = await params;

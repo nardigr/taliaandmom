@@ -16,6 +16,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV DOCKER_BUILD=1
 ENV NODE_OPTIONS=--max-old-space-size=1536
 RUN npx prisma generate
+# Coolify injects DATABASE_URL at build time — migrate before Next collects page data.
+RUN npx prisma migrate deploy
 RUN npm run build
 
 FROM base AS runner

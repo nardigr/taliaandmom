@@ -24,11 +24,16 @@ function toItem(row: Collection): CollectionItem {
 }
 
 async function fetchCollections(activeOnly: boolean): Promise<CollectionItem[]> {
-  const rows = await db.collection.findMany({
-    where: activeOnly ? { active: true } : undefined,
-    orderBy: [{ sortOrder: "asc" }, { label: "asc" }],
-  });
-  return rows.map(toItem);
+  try {
+    const rows = await db.collection.findMany({
+      where: activeOnly ? { active: true } : undefined,
+      orderBy: [{ sortOrder: "asc" }, { label: "asc" }],
+    });
+    return rows.map(toItem);
+  } catch (error) {
+    console.warn("[collections] query failed:", error);
+    return [];
+  }
 }
 
 export const getActiveCollections = unstable_cache(
