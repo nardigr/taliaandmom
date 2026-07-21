@@ -17,7 +17,7 @@ export const t = {
   identitetiMarkes: "Identiteti i markës",
   logoFaqes: "Logo e faqes",
   logoFaqesNdihme:
-    "Ngarko logon që shfaqet majtas në header. Pas ngarkimit, shtyp «Ruaj». Nëse e heq, përdoret wordmark-i Talja&mom.",
+    "Ngarko logon që shfaqet në header, footer dhe admin. Pas ngarkimit, shtyp «Ruaj». Nëse e heq, përdoret wordmark-i Talja&mom.",
   kryefaqjaAdminNdihme:
     "Përditëso tekstet dhe fotot e kryefaqes këtu. Logon e ndryshon te",
   carouselLidhja: "Lidhja e fotos",

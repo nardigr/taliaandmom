@@ -29,7 +29,12 @@ export function CartShell({
       <PageViewTracker />
       <Header logoUrl={logoUrl} collections={collections} />
       <main className="flex-1">{children}</main>
-      <Footer contact={contact} tagline={footerTagline} collections={collections} />
+      <Footer
+        contact={contact}
+        tagline={footerTagline}
+        collections={collections}
+        logoUrl={logoUrl}
+      />
       <CartDrawer currency={currency} />
     </>
   );

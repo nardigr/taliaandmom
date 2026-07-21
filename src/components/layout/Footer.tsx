@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { t } from "@/lib/i18n/sq";
 import type { ContactSettings } from "@/lib/settings";
-import { Wordmark } from "@/components/layout/Wordmark";
+import { SiteLogo } from "@/components/layout/SiteLogo";
 
 type FooterProps = {
   contact: ContactSettings;
   tagline: string;
   collections: { slug: string; label: string }[];
+  logoUrl?: string | null;
 };
 
-export function Footer({ contact, tagline, collections }: FooterProps) {
+export function Footer({ contact, tagline, collections, logoUrl }: FooterProps) {
   const year = new Date().getFullYear();
   const whatsappHref = `https://wa.me/${contact.whatsappNumber.replace(/\D/g, "")}`;
 
@@ -18,7 +19,13 @@ export function Footer({ contact, tagline, collections }: FooterProps) {
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <Wordmark className="text-2xl" />
+            <Link href="/" aria-label="Talja&mom">
+              <SiteLogo
+                logoUrl={logoUrl}
+                className="h-8 sm:h-9"
+                wordmarkClassName="text-2xl"
+              />
+            </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-choco-soft">
               {tagline}
             </p>

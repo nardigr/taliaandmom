@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { adminSignOutAction } from "@/lib/admin/actions";
 import { t } from "@/lib/i18n/sq";
 import { cn } from "@/lib/utils";
+import { SiteLogo } from "@/components/layout/SiteLogo";
 
 const links = [
   { href: "/admin", label: t.paneli, exact: true },
@@ -22,18 +23,24 @@ const links = [
 
 export function AdminSidebar({
   adminName,
+  logoUrl,
 }: {
   adminName?: string | null;
+  logoUrl?: string | null;
 }) {
   const currentPath = usePathname() ?? "/admin";
 
   return (
     <aside className="flex w-full flex-col border-b border-beige bg-cream lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r">
       <div className="border-b border-beige px-6 py-6">
-        <Link href="/" className="font-display text-2xl text-choco">
-          Talja&mom
+        <Link href="/" className="inline-flex" aria-label="Talja&mom">
+          <SiteLogo
+            logoUrl={logoUrl}
+            className="h-8 sm:h-9"
+            wordmarkClassName="text-2xl"
+          />
         </Link>
-        <p className="mt-1 text-xs uppercase tracking-[0.25em] text-choco-soft">
+        <p className="mt-2 text-xs uppercase tracking-[0.25em] text-choco-soft">
           Admin
         </p>
       </div>
