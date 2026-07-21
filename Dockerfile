@@ -13,6 +13,8 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV DOCKER_BUILD=1
+ENV NODE_OPTIONS=--max-old-space-size=1536
 RUN npx prisma generate
 RUN npm run build
 
