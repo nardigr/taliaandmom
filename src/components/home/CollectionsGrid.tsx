@@ -93,7 +93,9 @@ function CollectionCard({
         "group relative overflow-hidden rounded-lg border border-beige",
         "animate-fade-rise transition-transform duration-500 ease-out",
         "hover:-translate-y-1.5",
-        featured ? "aspect-[16/9] sm:aspect-[2.4/1]" : "aspect-[3/4]",
+        featured
+          ? "aspect-video min-h-[240px] w-full sm:min-h-[320px] lg:min-h-[380px]"
+          : "aspect-[3/4]",
       )}
       style={{ animationDelay: `${140 + index * 90}ms` }}
     >
