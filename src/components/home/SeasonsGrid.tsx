@@ -21,6 +21,7 @@ export async function SeasonsGrid({ title }: { title?: string }) {
         return {
           slug: collection.slug,
           label: collection.label,
+          sortOrder: collection.sortOrder,
           imageSrc: imagePath ? resolveImageSrc(imagePath) : null,
           unoptimized: Boolean(
             imagePath &&

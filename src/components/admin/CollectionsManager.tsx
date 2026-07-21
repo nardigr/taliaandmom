@@ -59,6 +59,10 @@ export function CollectionsManager({ collections }: CollectionsManagerProps) {
         <CollectionForm
           key={editing?.id ?? "new"}
           collection={editing}
+          suggestedSortOrder={
+            editing?.sortOrder ??
+            collections.reduce((max, item) => Math.max(max, item.sortOrder), 0) + 1
+          }
           onCancel={() => {
             setCreating(false);
             setEditingId(null);
@@ -88,6 +92,7 @@ export function CollectionsManager({ collections }: CollectionsManagerProps) {
                   /koleksioni/{item.slug}
                   {" · "}
                   {t.renditja}: {item.sortOrder}
+                  {item.sortOrder === 1 ? " · kryesore" : ""}
                   {" · "}
                   {item.active ? t.aktiv : t.jo}
                 </p>
@@ -130,10 +135,12 @@ export function CollectionsManager({ collections }: CollectionsManagerProps) {
 
 function CollectionForm({
   collection,
+  suggestedSortOrder,
   onCancel,
   onSaved,
 }: {
   collection: CollectionItem | null;
+  suggestedSortOrder: number;
   onCancel: () => void;
   onSaved: () => void;
 }) {
@@ -142,7 +149,9 @@ function CollectionForm({
   const [label, setLabel] = useState(collection?.label ?? "");
   const [slug, setSlug] = useState(collection?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(collection));
-  const [sortOrder, setSortOrder] = useState(String(collection?.sortOrder ?? 0));
+  const [sortOrder, setSortOrder] = useState(
+    String(collection?.sortOrder ?? suggestedSortOrder),
+  );
   const [active, setActive] = useState(collection?.active ?? true);
   const [coverImageUrl, setCoverImageUrl] = useState(collection?.coverImageUrl ?? "");
   const [handledSuccess, setHandledSuccess] = useState(false);
@@ -206,6 +215,7 @@ function CollectionForm({
           onChange={(event) => setSortOrder(event.target.value)}
           className={inputClass}
         />
+        <p className="text-xs text-choco-soft">{t.renditjaNdihme}</p>
       </label>
 
       <label className="flex items-center gap-3 text-sm text-choco">

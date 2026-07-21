@@ -133,7 +133,9 @@ export const t = {
   slugPerdorur: "Ky slug përdoret tashmë.",
   asnjeKoleksion: "Nuk ka koleksione ende.",
   koleksionetNdihme:
-    "Krijoni dhe menaxhoni koleksionet që shfaqen në faqen kryesore dhe në menunë.",
+    "Krijoni dhe menaxhoni koleksionet. Renditja 1 shfaqet e gjerë në rreshtin e parë të faqes kryesore; 2, 3, … vijojnë më poshtë.",
+  renditjaNdihme:
+    "Numri më i vogël del i pari. Vendosni 1 për koleksionin kryesor (rreshti i parë, i gjerë).",
   ngarkoFoto: "Ngarko foto",
   zgjidhNgjyren: "Zgjidh ngjyrën",
   zgjidhKategorine: "Zgjidh kategorinë",
