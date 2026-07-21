@@ -26,8 +26,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV UPLOADS_DIR=/app/uploads
+ENV NEXT_SHARP_PATH=/app/node_modules/sharp
 
-RUN apk add --no-cache curl \
+RUN apk add --no-cache curl su-exec \
   && addgroup --system --gid 1001 nodejs \
   && adduser --system --uid 1001 nextjs \
   && mkdir -p /app/uploads \
@@ -41,12 +42,16 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
+# Explicit sharp native binaries for image uploads (standalone trace can miss them).
+COPY --from=builder /app/node_modules/sharp ./node_modules/sharp
+COPY --from=builder /app/node_modules/@img ./node_modules/@img
 COPY --from=builder /app/scripts/docker-entrypoint.sh ./docker-entrypoint.sh
 
 RUN chmod +x ./docker-entrypoint.sh \
-  && chown -R nextjs:nodejs /app/uploads
+  && chown -R nextjs:nodejs /app/uploads /app/node_modules/sharp /app/node_modules/@img
 
-USER nextjs
+# Entrypoint starts as root to chown the uploads volume, then drops to nextjs.
+USER root
 EXPOSE 3000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \

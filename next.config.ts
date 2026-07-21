@@ -8,6 +8,17 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: process.env.DOCKER_BUILD === "1",
   },
+  // Native sharp binaries are required for /api/admin/upload in standalone Docker.
+  outputFileTracingIncludes: {
+    "/api/admin/upload": [
+      "./node_modules/sharp/**/*",
+      "./node_modules/@img/**/*",
+    ],
+    "/api/uploads/*": [
+      "./node_modules/sharp/**/*",
+      "./node_modules/@img/**/*",
+    ],
+  },
   images: {
     remotePatterns: [
       {

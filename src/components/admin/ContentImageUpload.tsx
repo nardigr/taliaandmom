@@ -35,7 +35,15 @@ export function ContentImageUpload({
       const formData = new FormData();
       formData.append("file", file);
       const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-      const data = (await res.json()) as { path?: string; url?: string; error?: string };
+      const raw = await res.text();
+      let data: { path?: string; url?: string; error?: string } = {};
+      try {
+        data = raw ? (JSON.parse(raw) as typeof data) : {};
+      } catch {
+        throw new Error(
+          raw?.trim() || `${t.gabimRuajtjes} (HTTP ${res.status})`,
+        );
+      }
       if (!res.ok) throw new Error(data.error || t.gabimRuajtjes);
 
       const url =

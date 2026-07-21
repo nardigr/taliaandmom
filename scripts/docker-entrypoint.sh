@@ -1,11 +1,14 @@
 #!/bin/sh
 set -e
 
-# Migrations run during image build (Dockerfile). Runtime Prisma CLI is not
-# bundled fully in the standalone image, so we start the app directly.
+UPLOADS="${UPLOADS_DIR:-/app/uploads}"
+mkdir -p "$UPLOADS"
 
-if [ -n "$UPLOADS_DIR" ] && [ ! -d "$UPLOADS_DIR" ]; then
-  mkdir -p "$UPLOADS_DIR"
+# Volume mounts are often root-owned; fix before dropping privileges.
+if [ "$(id -u)" = "0" ]; then
+  chown -R nextjs:nodejs "$UPLOADS" || true
+  echo "[deploy] Starting application..."
+  exec su-exec nextjs "$@"
 fi
 
 echo "[deploy] Starting application..."
