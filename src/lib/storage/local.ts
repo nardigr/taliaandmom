@@ -1,10 +1,20 @@
 import { randomUUID } from "crypto";
 import fs from "fs/promises";
 import path from "path";
-import sharp from "sharp";
 import { getUploadsDir } from "@/lib/storage/paths";
 
 const VARIANTS = [1600, 800, 400] as const;
+
+async function writeRawVariants(buffer: Buffer, relativeBase: string) {
+  // Fallback when sharp/native binaries are unavailable: store the same bytes
+  // for each size path so the public URL still resolves.
+  await Promise.all(
+    VARIANTS.map(async (width) => {
+      const outputPath = path.join(getUploadsDir(), `${relativeBase}-${width}.webp`);
+      await fs.writeFile(outputPath, buffer);
+    }),
+  );
+}
 
 export async function saveProductImage(buffer: Buffer) {
   const id = randomUUID();
@@ -13,13 +23,19 @@ export async function saveProductImage(buffer: Buffer) {
 
   await fs.mkdir(absoluteDir, { recursive: true });
 
-  for (const width of VARIANTS) {
-    const outputPath = path.join(getUploadsDir(), `${relativeBase}-${width}.webp`);
-    await sharp(buffer)
-      .rotate()
-      .resize({ width, withoutEnlargement: true })
-      .webp({ quality: 82 })
-      .toFile(outputPath);
+  try {
+    const sharp = (await import("sharp")).default;
+    for (const width of VARIANTS) {
+      const outputPath = path.join(getUploadsDir(), `${relativeBase}-${width}.webp`);
+      await sharp(buffer)
+        .rotate()
+        .resize({ width, withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toFile(outputPath);
+    }
+  } catch (error) {
+    console.error("[storage] sharp failed, writing raw upload:", error);
+    await writeRawVariants(buffer, relativeBase);
   }
 
   return `${relativeBase.replace(/\\/g, "/")}-800.webp`;

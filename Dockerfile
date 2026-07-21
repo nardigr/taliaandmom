@@ -43,12 +43,12 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
 # Explicit sharp native binaries for image uploads (standalone trace can miss them).
-COPY --from=builder /app/node_modules/sharp ./node_modules/sharp
-COPY --from=builder /app/node_modules/@img ./node_modules/@img
 COPY --from=builder /app/scripts/docker-entrypoint.sh ./docker-entrypoint.sh
 
-RUN chmod +x ./docker-entrypoint.sh \
-  && chown -R nextjs:nodejs /app/uploads /app/node_modules/sharp /app/node_modules/@img
+# Install sharp natively in the runner (more reliable than copying from builder).
+RUN npm install --omit=dev --no-save sharp@0.35.3 \
+  && chmod +x ./docker-entrypoint.sh \
+  && chown -R nextjs:nodejs /app/uploads /app/node_modules
 
 # Entrypoint starts as root to chown the uploads volume, then drops to nextjs.
 USER root
